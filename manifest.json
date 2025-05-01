@@ -1,0 +1,54 @@
+{
+  "name": "GMB Toolkit – Teleport • Info • Reviews",
+  "description": "Teleport to any spot, inspect GMB business details and analyse reviews – all inside Google Maps.",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "action": {
+    "default_title": "GMB Toolkit",
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  },
+  "permissions": [
+    "tabs",
+    "scripting",
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://www.google.com/maps/*",
+    "https://*.google.com/maps/*",
+    "https://www.google.com/search*",
+    "https://*.google.com/search*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/maps/*", "https://*.google.com/maps/*"],
+      "js": ["content_scripts/tp_ranks.js"]
+    },
+    {
+      "matches": ["https://www.google.com/maps/*", "https://*.google.com/maps/*"],
+      "js": ["content_scripts/gmb_details.js", "content_scripts/rev_reviews.js"],
+      "css": ["style.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "pages/teleport.html",
+        "pages/report.html",
+        "libs/leaflet.js",
+        "libs/leaflet.css",
+        "libs/chart.min.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

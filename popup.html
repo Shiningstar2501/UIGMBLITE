@@ -1,0 +1,108 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>GMB Toolkit</title>
+<link rel="stylesheet" href="tailwind.css" />
+<link rel="stylesheet" href="style.css" />
+<style>
+  body { width:330px; font-family:system-ui, sans-serif; margin:0; }
+  nav { display:flex; }
+  nav button { flex:1; padding:6px; border:none; background:#eee; cursor:pointer; }
+  nav button.active { background:#0b57d0; color:#fff; }
+  section { display:none; padding:8px; }
+  section.active { display:block; }
+</style>
+</head>
+<body>
+  <nav>
+    <button data-tab="tp" class="active">Teleport</button>
+    <button data-tab="gmb">Info</button>
+    <button data-tab="rev">Reviews</button>
+  </nav>
+  <section id="tp" class="active">
+    <label>Search query<br><input id="tp_query" type="text" placeholder="e.g. coffee near Times Sq"></label>
+    <button id="tp_go">Open Teleport Map</button>
+  </section>
+  <section id="gmb">
+    <p>Open a Google Maps Place page – details will appear here.</p>
+    <pre id="gmb_box" style="font-size:11px"></pre>
+  </section>
+  <section id="rev">
+    <button id="rev_go">Analyze this business’ reviews</button>
+    <canvas id="rev_chart" height="180"></canvas>
+  </section>
+  <script src="popup.js"></script>
+  <script src="libs/chart.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GMB Toolkit</title>
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="./tailwind.css" />
+
+</head>
+<body class="w-[330px] font-sans">
+
+  <!-- Tab Bar -->
+  <nav class="flex bg-gray-100 rounded-lg p-1 mb-2">
+    <button data-tab="tp"
+            class="tab flex-1 py-2 px-3 text-sm font-medium rounded-md bg-blue-600 text-white">
+      Teleport
+    </button>
+    <button data-tab="gmb"
+            class="tab flex-1 py-2 px-3 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+      Info
+    </button>
+    <button data-tab="rev"
+            class="tab flex-1 py-2 px-3 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
+      Reviews
+    </button>
+  </nav>
+
+  <!-- Teleport Section -->
+  <section id="tp" class="p-4">
+    <label class="block text-sm font-medium text-gray-700">
+      Search query
+      <input id="tp_query" type="text" placeholder="e.g. coffee near Times Sq"
+             class="mt-1 block w-full rounded-md border-gray-300
+                    focus:border-blue-500 focus:ring-blue-500 p-2 text-sm" />
+    </label>
+    <button id="tp_go"
+            class="mt-3 w-full bg-blue-600 hover:bg-blue-700
+                   text-white py-2 px-4 rounded-md">
+      Open Teleport Map
+    </button>
+  </section>
+
+  <!-- Info Section -->
+  <section id="gmb" class="p-4 hidden">
+    <pre id="gmb_box"
+         class="mt-2 text-xs bg-gray-100 p-2 rounded border
+                overflow-y-auto max-h-48 whitespace-pre-wrap">…waiting for data</pre>
+  </section>
+
+  <!-- Reviews Section -->
+  <section id="rev" class="p-4 hidden">
+    <button id="rev_go"
+            class="w-full bg-blue-600 hover:bg-blue-700
+                   text-white py-2 px-4 rounded-md">
+      Analyze this business’ reviews
+    </button>
+    <div class="mt-3 h-44">
+      <canvas id="rev_chart" class="w-full h-full"></canvas>
+    </div>
+  </section>
+
+  <script src="popup.js"></script>
+  <script src="libs/chart.min.js"></script>
+</body>
+</html>
