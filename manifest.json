@@ -1,5 +1,5 @@
 {
-  "name": "GMB Toolkit – Teleport • Info • Reviews",
+  "name": "111GMB Toolkit – Teleport • Info • Reviews",
   "description": "Teleport to any spot, inspect GMB business details and analyse reviews – all inside Google Maps.",
   "version": "1.0.0",
   "manifest_version": 3,
@@ -42,11 +42,13 @@
   "web_accessible_resources": [
     {
       "resources": [
+        "auth.html",
         "pages/teleport.html",
         "pages/report.html",
         "libs/leaflet.js",
         "libs/leaflet.css",
-        "libs/chart.min.js"
+        "libs/chart.min.js",
+        "pages/popup2-info.html"
       ],
       "matches": ["<all_urls>"]
     }

@@ -1,0 +1,190 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login / Register | GMB Extension</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 350px;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #loginBtn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    #loginBtn:hover {
+      background-color: #0056b3;
+    }
+
+    #registerBtn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    #registerBtn:hover {
+      background-color: #1e7e34;
+    }
+
+    #msg {
+      margin-top: 1rem;
+      text-align: center;
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Login / Register</h2>
+    <input id="email" type="email" placeholder="Enter your email" />
+    <input id="password" type="password" placeholder="Enter your password" />
+    <button id="loginBtn">Login</button>
+    <button id="registerBtn">Register</button>
+    <p id="msg"></p>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auth | GMB Extension</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .toggle {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #submitBtn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    #submitBtn:hover {
+      background-color: #0056b3;
+    }
+
+    #msg {
+      margin-top: 1rem;
+      text-align: center;
+      color: red;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 id="formTitle">Login</h2>
+    <div class="toggle">
+      <button id="toggleModeBtn">Switch to Register</button>
+
+    </div>
+
+    <div id="registerFields" class="hidden">
+      <input id="name" type="text" placeholder="Full Name" />
+      <input id="phone" type="text" placeholder="Phone Number" />
+    </div>
+
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
+
+    <button id="submitBtn">Login</button>
+    <p id="msg"></p>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

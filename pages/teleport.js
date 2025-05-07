@@ -1,221 +1,230 @@
+// // /* global L, chrome */
+// // document.addEventListener('DOMContentLoaded', () => {
+// //   const start = [28.61, 77.23];
+// //   const map = L.map('map').setView(start, 13);
 
-// //   let lat = 28.61, lng = 77.23;
-
-// //   const map = L.map('map').setView([lat, lng], 13);
-// //   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-// //   const customIcon = L.icon({
-// //     iconUrl: 'marker-icon.jpg', // or 'images/marker-icon.png' if it's in a subfolder
-// //     iconSize: [30, 40],         // width, height in pixels
-// //     iconAnchor: [15, 40],       // where the icon points to the location
-// //     popupAnchor: [0, -40]       // where the popup appears in relation
-// //   });
-  
-// //   const marker = L.marker([lat, lng], {
-// //     icon: customIcon,
-// //     draggable: true
+// //   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// //     attribution: '© OpenStreetMap contributors'
 // //   }).addTo(map);
+
+// //   const markerIcon = L.icon({
+// //     iconUrl: chrome.runtime.getURL('../libs/marker-icon.png'),
+// //     shadowUrl: chrome.runtime.getURL('../libs/marker-shadow.png'),
+// //     iconSize: [25, 41],
+// //     iconAnchor: [12, 41]
+// //   });
+
+// //   const marker = L.marker(start, { draggable: true, icon: markerIcon }).addTo(map);
+// //   let coords = { lat: start[0], lng: start[1] };
+// //   marker.on('dragend', () => { coords = marker.getLatLng(); });
+
+// //   // 🔁 Restore saved query
+// //   chrome.storage.local.get('tp_query', ({ tp_query }) => {
+// //     document.getElementById('query').value = tp_query || '';
+// //   });
+
+// //   // ✅ Run search using new button and query input
+// //   document.getElementById('searchBtn').addEventListener('click', () => {
+// //     const query = document.getElementById('query').value.trim();
+// //     if (!query) return alert("Please enter a search query first.");
+
+// //     chrome.storage.local.set({ tp_query: query }); // Save for next time
+// //     const { lat, lng } = coords;
+// //     const url = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lng},15z`;
+// //     chrome.tabs.create({ url });
+// //   });
+
+// //   // Rankings
+// //   // const listEl = document.getElementById('list');
+// //   // const resultsEl = document.getElementById('results');
+// //   // const render = (arr) => {
+// //   //   if (!arr?.length) return;
+// //   //   listEl.innerHTML = arr.map(r => `<li><b>${r.rank}.</b> ${r.name}</li>`).join('');
+// //   //   resultsEl.hidden = false;
+// //   // };
+// //   const listEl = document.getElementById('list');
+// //   const resultsEl = document.getElementById('results');
+// //   const statusEl = document.getElementById('status');
   
-
-// //   marker.on('dragend', () => {
-// //     const pos = marker.getLatLng();
-// //     lat = pos.lat;
-// //     lng = pos.lng;
-// //     console.log("lat updated to -->", lat);
-// //     console.log("lng updated to -->", lng);
-// //   });
-
-
-// //   map.on('click', (e) => {
-// //     lat = e.latlng.lat;
-// //     lng = e.latlng.lng;
-// //     marker.setLatLng([lat, lng]);
-// //   });
-
-// //   // Restore search query if set
-// //   chrome.storage.local.get("searchQuery", (data) => {
-// //     if (data.searchQuery) {
-// //       document.getElementById("query").value = data.searchQuery;
+// //   const render = (arr) => {
+// //     if (!arr?.length) {
+// //       statusEl.textContent = 'No rankings found.';
+// //       return;
 // //     }
-// //   });
+  
+// //     statusEl.textContent = '✅ Rankings received:';
+// //     listEl.innerHTML = arr.map(r => `<li><b>#${r.rank}</b> — ${r.name}</li>`).join('');
+// //     resultsEl.hidden = false;
+// //   };
 
-// //   document.getElementById("searchBtn").addEventListener("click", () => {
-// //     const query = document.getElementById("query").value;
-// //     const gmapUrl = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lng},14z`;
-// //     window.open(gmapUrl, "_blank");
+// //   chrome.storage.local.get('tp_rankings', ({ tp_rankings }) => render(tp_rankings));
+// //   chrome.runtime.onMessage.addListener((m) => {
+// //     if (m.type === 'TP_RANKINGS_PUSH') render(m.data);
 // //   });
-
-// // // After DOM is ready
-// // // chrome.storage.local.get("businessRankings", (data) => {
-// // //   if (data.businessRankings && Array.isArray(data.businessRankings)) {
-// // //     const listEl = document.getElementById("rankingList");
-// // //     listEl.innerHTML = ""; // clear old results
-// // //     data.businessRankings.forEach(item => {
-// // //       const li = document.createElement("li");
-// // //       li.textContent = item;
-// // //       listEl.appendChild(li);
-// // //     });
-// //   // }
-// // // });
-// // function updateRankingList(rankings) {
-// //   const listEl = document.getElementById("rankingList");
-// //   listEl.innerHTML = ""; // clear old results
-// //   rankings.forEach(item => {
-// //     const li = document.createElement("li");
-// //     li.textContent = item;
-// //     listEl.appendChild(li);
+// //   chrome.storage.onChanged.addListener((chg, area) => {
+// //     if (area === 'local' && chg.tp_rankings?.newValue) render(chg.tp_rankings.newValue);
 // //   });
-// // }
-
-// // // Load existing rankings if already present
-// // chrome.storage.local.get("businessRankings", (data) => {
-// //   if (data.businessRankings && Array.isArray(data.businessRankings)) {
-// //     updateRankingList(data.businessRankings);
-// //   }
 // // });
 
-// // // Listen for updates to rankings
-// // chrome.storage.onChanged.addListener((changes, area) => {
-// //   if (area === "local" && changes.businessRankings) {
-// //     updateRankingList(changes.businessRankings.newValue);
-// //   }
-// // });
-// let lat = 28.61, lng = 77.23;
-
-// const map = L.map('map').setView([lat, lng], 13);
-// L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-// const customIcon = L.icon({
-//   iconUrl: 'marker-icon.jpg', // or 'images/marker-icon.png' if it's in a subfolder
-//   iconSize: [30, 40],         // width, height in pixels
-//   iconAnchor: [15, 40],       // where the icon points to the location
-//   popupAnchor: [0, -40]       // where the popup appears in relation
-// });
-
-// const marker = L.marker([lat, lng], {
-//   icon: customIcon,
-//   draggable: true
-// }).addTo(map);
 
 
-// marker.on('dragend', () => {
-//   const pos = marker.getLatLng();
-//   lat = pos.lat;
-//   lng = pos.lng;
-//   console.log("lat updated to -->", lat);
-//   console.log("lng updated to -->", lng);
-// });
 
 
-// map.on('click', (e) => {
-//   lat = e.latlng.lat;
-//   lng = e.latlng.lng;
-//   marker.setLatLng([lat, lng]);
-// });
+// /* global L, chrome */
+// document.addEventListener('DOMContentLoaded', () => {
+//   const start = [28.61, 77.23];
+//   const map = L.map('map').setView(start, 13);
 
-// // Restore search query if set
-// chrome.storage.local.get("searchQuery", (data) => {
-//   if (data.searchQuery) {
-//     document.getElementById("query").value = data.searchQuery;
-//   }
-// });
+//   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '© OpenStreetMap contributors'
+//   }).addTo(map);
 
-// document.getElementById("searchBtn").addEventListener("click", () => {
-//   const query = document.getElementById("query").value;
-//   const gmapUrl = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lng},14z`;
-//   window.open(gmapUrl, "_blank");
-// });
+//   const markerIcon = L.icon({
+//     iconUrl: chrome.runtime.getURL('../libs/marker-icon.png'),
+//     shadowUrl: chrome.runtime.getURL('../libs/marker-shadow.png'),
+//     iconSize: [25, 41],
+//     iconAnchor: [12, 41]
+//   });
 
-// // After DOM is ready
-// // chrome.storage.local.get("businessRankings", (data) => {
-// //   if (data.businessRankings && Array.isArray(data.businessRankings)) {
-// //     const listEl = document.getElementById("rankingList");
-// //     listEl.innerHTML = ""; // clear old results
-// //     data.businessRankings.forEach(item => {
-// //       const li = document.createElement("li");
-// //       li.textContent = item;
-// //       listEl.appendChild(li);
-// //     });
-// // }
-// // });
-// function updateRankingList(rankings) {
-// const listEl = document.getElementById("rankingList");
-// listEl.innerHTML = ""; // clear old results
-// rankings.forEach(item => {
-//   const li = document.createElement("li");
-//   li.textContent = item;
-//   listEl.appendChild(li);
-// });
-// }
+//   let coords = { lat: start[0], lng: start[1] };
 
-// // Load existing rankings if already present
-// chrome.storage.local.get("businessRankings", (data) => {
-// if (data.businessRankings && Array.isArray(data.businessRankings)) {
-//   updateRankingList(data.businessRankings);
-// }
-// });
+//   const marker = L.marker(start, { draggable: true, icon: markerIcon }).addTo(map);
 
-// // Listen for updates to rankings
-// chrome.storage.onChanged.addListener((changes, area) => {
-// if (area === "local" && changes.businessRankings) {
-//   updateRankingList(changes.businessRankings.newValue);
-// }
+//   // ✅ Update lat/lng on drag
+//   marker.on('dragend', () => {
+//     const pos = marker.getLatLng();
+//     coords.lat = pos.lat;
+//     coords.lng = pos.lng;
+//     console.log("📍 Marker moved to:", coords.lat, coords.lng);
+//   });
+
+//   // Restore previous query if available
+//   chrome.storage.local.get('tp_query', ({ tp_query }) => {
+//     document.getElementById('query').value = tp_query || '';
+//   });
+
+//   // ✅ Button to teleport (uses updated coords)
+//   document.getElementById('searchBtn').addEventListener('click', () => {
+//     const query = document.getElementById('query').value.trim();
+//     if (!query) return alert("Please enter a search term.");
+
+//     chrome.storage.local.set({ tp_query: query });
+
+//     const { lat, lng } = coords;
+//     console.log("🚀 Teleporting to:", lat, lng);
+
+//     const url = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lng},15z`;
+//     chrome.tabs.create({ url });
+//   });
+
+//   // Optional: Show ranking updates if you're injecting them
+//   const listEl = document.getElementById('list');
+//   const resultsEl = document.getElementById('results');
+//   const statusEl = document.getElementById('status');
+
+//   const render = (arr) => {
+//     if (!arr?.length) {
+//       statusEl.textContent = 'No rankings found.';
+//       return;
+//     }
+
+//     statusEl.textContent = '✅ Rankings received:';
+//     listEl.innerHTML = arr.map(r => `<li><b>#${r.rank}</b> — ${r.name}</li>`).join('');
+//     resultsEl.hidden = false;
+//   };
+
+//   chrome.storage.local.get('tp_rankings', ({ tp_rankings }) => render(tp_rankings));
+//   chrome.runtime.onMessage.addListener((m) => {
+//     if (m.type === 'TP_RANKINGS_PUSH') render(m.data);
+//   });
+//   chrome.storage.onChanged.addListener((chg, area) => {
+//     if (area === 'local' && chg.tp_rankings?.newValue) render(chg.tp_rankings.newValue);
+//   });
 // });
 
 
 
 /* global L, chrome */
 document.addEventListener('DOMContentLoaded', () => {
-    /* ---------- Leaflet map ---------- */
-    const start = [28.61, 77.23];
-    const map   = L.map('map').setView(start, 13);
-  
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-  
-    /* marker with local icon */
-    const markerIcon = L.icon({
-      iconUrl   : chrome.runtime.getURL('../libs/marker-icon.png'),
-      shadowUrl : chrome.runtime.getURL('../libs/marker-shadow.png'),
-      iconSize  : [25, 41],
-      iconAnchor: [12, 41]
-    });
-    const marker = L.marker(start, { draggable:true, icon:markerIcon }).addTo(map);
-    let coords   = { lat: start[0], lng: start[1] };
-    marker.on('dragend', () => { coords = marker.getLatLng(); });
-  
-    /* ---------- Run-search button ---------- */
-    document.getElementById('run').addEventListener('click', () => {
-      chrome.storage.local.get('tp_query', ({ tp_query }) => {
-        const query = encodeURIComponent(tp_query || '');
-        const { lat, lng } = coords;
-        const url = `https://www.google.com/maps/search/${query}/@${lat},${lng},15z`;
-        chrome.tabs.create({ url });    // open in NEW tab, keep Teleport open
-      });
-    });
-  
-    /* ---------- Ranking list renderer ---------- */
-    const listEl    = document.getElementById('list');
-    const resultsEl = document.getElementById('results');
-  
-    const render = (arr) => {
-      if (!arr?.length) return;
-      listEl.innerHTML = arr.map(r => `<li><b>${r.rank}.</b> ${r.name}</li>`).join('');
-      resultsEl.hidden = false;
-    };
-  
-    // show existing list if already stored
-    chrome.storage.local.get('tp_rankings', ({ tp_rankings }) => render(tp_rankings));
-  
-    // live pushes from service-worker
-    chrome.runtime.onMessage.addListener((m) => {
-      if (m.type === 'TP_RANKINGS_PUSH') render(m.data);
-    });
-  
-    // stay in sync if storage key changes later
-    chrome.storage.onChanged.addListener((chg, area) => {
-      if (area === 'local' && chg.tp_rankings?.newValue) render(chg.tp_rankings.newValue);
-    });
+  chrome.storage.local.get("jwt", ({ jwt }) => {
+    if (!jwt) {
+      window.location.href = chrome.runtime.getURL("auth.html?redirect=teleport.html");
+      return;
+    }
+  const start = [28.61, 77.23];
+  const map = L.map('map').setView(start, 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const markerIcon = L.icon({
+    iconUrl: chrome.runtime.getURL('../libs/marker-icon.png'),
+    shadowUrl: chrome.runtime.getURL('../libs/marker-shadow.png'),
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
   });
-  
+
+  let coords = { lat: start[0], lng: start[1] };
+
+  const marker = L.marker(start, { draggable: true, icon: markerIcon }).addTo(map);
+
+  // ✅ Drag marker to update coordinates
+  marker.on('dragend', () => {
+    const pos = marker.getLatLng();
+    coords.lat = pos.lat;
+    coords.lng = pos.lng;
+    console.log("📍 Marker dragged to:", coords.lat, coords.lng);
+  });
+
+  // ✅ Click on map to move marker
+  map.on('click', (e) => {
+    coords.lat = e.latlng.lat;
+    coords.lng = e.latlng.lng;
+    marker.setLatLng([coords.lat, coords.lng]);
+    console.log("📍 Marker moved by map click to:", coords.lat, coords.lng);
+  });
+
+  // ✅ Restore saved query
+  chrome.storage.local.get('tp_query', ({ tp_query }) => {
+    document.getElementById('query').value = tp_query || '';
+  });
+
+  // ✅ Run teleport with latest coords
+  document.getElementById('searchBtn').addEventListener('click', () => {
+    const query = document.getElementById('query').value.trim();
+    if (!query) return alert("Please enter a search term.");
+
+    chrome.storage.local.set({ tp_query: query });
+
+    const { lat, lng } = coords;
+    console.log("🚀 Teleporting to:", lat, lng);
+
+    const url = `https://www.google.com/maps/search/${encodeURIComponent(query)}/@${lat},${lng},15z`;
+    chrome.tabs.create({ url });
+  });
+
+  // Optional: Ranking results display
+  const listEl = document.getElementById('list');
+  const resultsEl = document.getElementById('results');
+  const statusEl = document.getElementById('status');
+
+  const render = (arr) => {
+    if (!arr?.length) {
+      statusEl.textContent = 'No rankings found.';
+      return;
+    }
+
+    statusEl.textContent = '✅ Rankings received:';
+    listEl.innerHTML = arr.map(r => `<li><b>#${r.rank}</b> — ${r.name}</li>`).join('');
+    resultsEl.hidden = false;
+  };
+
+  chrome.storage.local.get('tp_rankings', ({ tp_rankings }) => render(tp_rankings));
+  chrome.runtime.onMessage.addListener((m) => {
+    if (m.type === 'TP_RANKINGS_PUSH') render(m.data);
+  });
+  chrome.storage.onChanged.addListener((chg, area) => {
+    if (area === 'local' && chg.tp_rankings?.newValue) render(chg.tp_rankings.newValue);
+  });
+})});

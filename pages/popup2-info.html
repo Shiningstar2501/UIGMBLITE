@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: sans-serif;
+        width: 200px;
+        padding: 10px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      h4 {
+        margin: 0 0 6px 0;
+        font-size: 14px;
+      }
+      .label {
+        font-weight: bold;
+      }
+      .link {
+        color: #1a73e8;
+        text-decoration: none;
+      }
+      .link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h4>GMB Lite</h4>
+    <div id="gmb_box">…waiting for data</div>
+
+    <script>
+      chrome.storage.local.get('gmb_details', ({ gmb_details }) => {
+        const box = document.getElementById('gmb_box');
+        if (!gmb_details) {
+          box.innerHTML = '<p style="color: gray;">…waiting for data</p>';
+          return;
+        }
+
+        const {
+          name, address, website, phone, category,
+          lat, lng, placeId, kgId, links
+        } = gmb_details;
+
+        box.innerHTML = ` <div><span class="label">Business:</span> \${name || '-'}</div>
+          <div><span class="label">Address:</span> \${address || '-'}</div>
+          <div><span class="label">Phone:</span> \${phone || '-'}</div>
+          <div><span class="label">Website:</span>
+            <a class="link" href="http://\${website}" target="_blank">\${website}</a></div>
+          <div><span class="label">Category:</span> \${category || '-'}</div>
+          <div><span class="label">Lat/Lng:</span> \${lat || '-'} / \${lng || '-'}</div>
+          <div><span class="label">Place ID:</span> \${placeId || '-'}</div>
+          <div><span class="label">KG ID:</span> \${kgId || '-'}</div>
+          <br/>
+          <div class="label">Links:</div>
+          <ul style="padding-left: 15px; margin: 5px 0;">
+            <li><a class="link" href="\${links?.gmb?.reviewList}" target="_blank">Review List</a></li>
+            <li><a class="link" href="\${links?.seo?.cache}" target="_blank">Website Cache</a></li>
+            <li><a class="link" href="\${links?.seo?.neilpatel}" target="_blank">SEO Audit</a></li>
+          </ul>
+        `
+      });
+    </script>
+  </body>
+</html>
