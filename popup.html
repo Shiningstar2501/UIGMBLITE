@@ -23,6 +23,8 @@
             class="tab flex-1 py-2 px-3 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
       Reviews
     </button>
+    <button class="tab text-sm font-medium px-4 py-2 text-gray-700" data-tab="posts">📊 Posts</button>
+
   </nav>
 
   <!-- Teleport Section -->
@@ -65,7 +67,17 @@
     </div>
   </section>
 
+  <section id="posts" class="hidden p-4">
+    <button id="load_posts" class="bg-blue-600 text-white px-4 py-2 rounded mb-4 w-full">
+      Analyze Posts
+    </button>
+    <div id="summary" class="text-sm mb-3 text-gray-800">Click above to load post analysis</div>
+    <canvas id="postChart" height="300"></canvas>
+  </section>
+  
+
   <script src="popup.js"></script>
+  <script src="content_scripts/post-analysis.js"></script>
   <script src="libs/chart.min.js"></script>
 </body>
 </html>
