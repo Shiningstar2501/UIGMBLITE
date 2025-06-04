@@ -101,8 +101,6 @@ const refreshGmb = () => {
   });
 };
 
-
-
 refreshGmb();
 
 document.addEventListener('click', (e) => {
@@ -143,7 +141,7 @@ const drawChart = (monthly) => {
 };
 
 chrome.runtime.onMessage.addListener((m) => {
-  if (m.type === 'REV_CHART_DATA') {
+  if (m.type === 'REV_CHART_DATA') {    
     drawChart(m.data);
   }
 });
@@ -178,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const GEMINI_API_KEY = "AIzaSyD3mbkwBAmmh6NCopRf0SZIkXc1Jb9ctoc";
+  const GEMINI_API_KEY = "AIzaSyDpYUehnolHnCDl-8DJeYAvzTAkwQHRCnk";
   const TOOL_LABELS = {
     "gmb-post": "Create a Google My Business post for",
     "facebook-post": "Create a Facebook post for",
@@ -196,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
       textarea.value = "Loading...";
 
       try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
@@ -209,6 +207,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
-
-
