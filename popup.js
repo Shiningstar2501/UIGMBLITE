@@ -163,3 +163,52 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const tabButtons = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      tabButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      tabContents.forEach((tc) => tc.classList.add("hidden"));
+      const tabId = btn.id.replace("-tab", "-content");
+      document.getElementById(tabId).classList.remove("hidden");
+    });
+  });
+
+  const GEMINI_API_KEY = "AIzaSyD3mbkwBAmmh6NCopRf0SZIkXc1Jb9ctoc";
+  const TOOL_LABELS = {
+    "gmb-post": "Create a Google My Business post for",
+    "facebook-post": "Create a Facebook post for",
+    "category": "Find categories for",
+    "service": "List services for",
+    "review-response": "Write a review response for",
+    "qa": "Generate common questions and answers for"
+  };
+
+  document.querySelectorAll(".ai-button").forEach(button => {
+    button.addEventListener("click", async () => {
+      const toolId = button.dataset.tool;
+      const prompt = TOOL_LABELS[toolId] + " Visacent LTD."; // Replace with dynamic name if needed
+      const textarea = document.getElementById("gmb-result");
+      textarea.value = "Loading...";
+
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+        const data = await res.json();
+        textarea.value = data.candidates?.[0]?.content?.parts?.[0]?.text || "❌ No response from Gemini";
+      } catch (e) {
+        textarea.value = "❌ Error: " + e.message;
+      }
+    });
+  });
+});
+
+
+

@@ -75,6 +75,24 @@
     <canvas id="postChart" height="300"></canvas>
   </section>
   
+  <!-- Step 1: Update popup2-info.html to add a new AI Tools tab -->
+<!-- Add this inside the tab button section -->
+<button id="ai-tools-tab" class="tab-button">AI Tools</button>
+
+<!-- Add this in the tab content area -->
+<div id="ai-tools-content" class="tab-content hidden">
+  <div id="gmb-ai-panel">
+    <div class="tool-buttons">
+      <button class="ai-button" data-tool="gmb-post">GMB Post</button>
+      <button class="ai-button" data-tool="facebook-post">Facebook Post</button>
+      <button class="ai-button" data-tool="category">GMB Category</button>
+      <button class="ai-button" data-tool="service">GMB Services</button>
+      <button class="ai-button" data-tool="review-response">Review Response</button>
+      <button class="ai-button" data-tool="qa">Q&A Section</button>
+    </div>
+    <textarea id="gmb-result" placeholder="Result will appear here..."></textarea>
+  </div>
+</div>
 
   <script src="popup.js"></script>
   <script src="content_scripts/post-analysis.js"></script>
