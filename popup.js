@@ -3,6 +3,13 @@ const $ = q => document.querySelector(q);
 // Tab navigation (Tailwind-based)
 for (const btn of document.querySelectorAll('nav .tab')) {
   btn.onclick = () => {
+     const tabId = btn.dataset.tab;
+
+      // Special case: AI TOOL should open new tab instead of showing section
+    if (tabId === "Ai_Tool") {
+      chrome.tabs.create({ url: chrome.runtime.getURL("pages/ai-tools.html") });
+      return;
+    }
     // Reset all tabs
     document.querySelectorAll('nav .tab').forEach(t => {
       t.classList.remove('bg-blue-600', 'text-white');
@@ -117,7 +124,7 @@ document.getElementById('rev_go').onclick = () => {
       alert('Open a Google Maps business page first.');
       return;
     }
-    chrome.tabs.sendMessage(tab.id, { action: 'scrape_reviews' }).catch(() => {});
+    chrome.tabs.sendMessage(tab.id, { action: 'scrape_reviews' }).catch(() => { });
   });
 };
 
@@ -133,7 +140,7 @@ const drawChart = (monthly) => {
       labels: monthly.map(m => m.month),
       datasets: [
         { label: 'Total reviews', data: monthly.map(m => m.count), borderWidth: 1 },
-        { label: 'Avg rating',   data: monthly.map(m => m.avg.toFixed(2)), borderWidth: 1 }
+        { label: 'Avg rating', data: monthly.map(m => m.avg.toFixed(2)), borderWidth: 1 }
       ]
     },
     options: { responsive: true, maintainAspectRatio: false }
@@ -141,7 +148,7 @@ const drawChart = (monthly) => {
 };
 
 chrome.runtime.onMessage.addListener((m) => {
-  if (m.type === 'REV_CHART_DATA') {    
+  if (m.type === 'REV_CHART_DATA') {
     drawChart(m.data);
   }
 });
@@ -175,35 +182,117 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById(tabId).classList.remove("hidden");
     });
   });
-
-  const GEMINI_API_KEY = "AIzaSyDpYUehnolHnCDl-8DJeYAvzTAkwQHRCnk";
-  const TOOL_LABELS = {
-    "gmb-post": "Create a Google My Business post for",
-    "facebook-post": "Create a Facebook post for",
-    "category": "Find categories for",
-    "service": "List services for",
-    "review-response": "Write a review response for",
-    "qa": "Generate common questions and answers for"
-  };
-
-  document.querySelectorAll(".ai-button").forEach(button => {
-    button.addEventListener("click", async () => {
-      const toolId = button.dataset.tool;
-      const prompt = TOOL_LABELS[toolId] + " Visacent LTD."; // Replace with dynamic name if needed
-      const textarea = document.getElementById("gmb-result");
-      textarea.value = "Loading...";
-
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-        });
-        const data = await res.json();
-        textarea.value = data.candidates?.[0]?.content?.parts?.[0]?.text || "❌ No response from Gemini";
-      } catch (e) {
-        textarea.value = "❌ Error: " + e.message;
-      }
-    });
-  });
 });
+
+
+  // AI TOOL 
+  document.querySelector("[data-tab='Ai_Tool']").addEventListener("click", () => {
+  chrome.tabs.create({ url: chrome.runtime.getURL("ai-tools.html") });
+});
+
+  // const GEMINI_API_KEY = "AIzaSyDpYUehnolHnCDl-8DJeYAvzTAkwQHRCnk";
+  // const TOOL_LABELS = {
+  //   "gmb-post": "Create a Google My Business post for",
+  //   "facebook-post": "Create a Facebook post for",
+  //   "category": "Find categories for",
+  //   "service": "List services for",
+  //   "review-response": "Write a review response for",
+  //   "qa": "Generate common questions and answers for"
+  // };
+
+  // document.querySelectorAll(".ai-button").forEach(button => {
+  //   button.addEventListener("click", async () => {
+  //     const toolId = button.dataset.tool;
+  //     // const prompt = TOOL_LABELS[toolId] + " Visacent LTD."; // Replace with dynamic name if needed
+  //     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+  //       chrome.tabs.sendMessage(tab.id, { action: "get_business_name" }, async (response) => {
+  //         const name = response?.name || "a business";
+  //         const prompt = TOOL_LABELS[toolId] + " " + name;
+  //         const textarea = document.getElementById("gmb-result");
+  //         textarea.value = "Loading...";
+  //       });
+  //     });
+  //         try {
+  //           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+  //             method: "POST",
+  //             headers: { "Content-Type": "application/json" },
+  //             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+  //           });
+  //           const data = await res.json();
+  //           textarea.value = data.candidates?.[0]?.content?.parts?.[0]?.text || "❌ No response from Gemini";
+  //         } catch (e) {
+  //           textarea.value = "❌ Error: " + e.message;
+  //         }
+  //       });
+  //       });
+  //     });
+  //   });
+
+//   document.querySelectorAll(".ai-button").forEach(button => {
+//   button.addEventListener("click", () => {
+//     const toolId = button.dataset.tool;
+//     chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+//       chrome.tabs.sendMessage(tab.id, { action: "get_business_name" }, async (response) => {
+//         const name = response?.name || "a business";
+//         const prompt = TOOL_LABELS[toolId] + " " + name;
+//         const textarea = document.getElementById("gmb-result");
+//         textarea.value = "Loading...";
+
+//         try {
+//           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+//             method: "POST",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+//           });
+//           const data = await res.json();
+//           textarea.value = data.candidates?.[0]?.content?.parts?.[0]?.text || "❌ No response from Gemini";
+//         } catch (e) {
+//           textarea.value = "❌ Error: " + e.message;
+//         }
+//       });
+//     });
+//   });
+// });
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const GEMINI_API_KEY = "AIzaSyDpYUehnolHnCDl-8DJeYAvzTAkwQHRCnk";
+
+//   const TOOL_LABELS = {
+//     "gmb-post": "Create a Google My Business post for",
+//     "facebook-post": "Create a Facebook post for",
+//     "category": "Find categories for",
+//     "service": "List services for",
+//     "review-response": "Write a review response for",
+//     "qa": "Generate common questions and answers for"
+//   };
+
+//   document.querySelectorAll(".ai-button").forEach(button => {
+//     button.addEventListener("click", () => {
+//       const toolId = button.dataset.tool;
+
+//       // Get current tab
+//       chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+//         // Ask content script for business name
+//         chrome.tabs.sendMessage(tab.id, { action: "get_business_name" }, async (response) => {
+//           const name = response?.name || "a business";
+//           const prompt = TOOL_LABELS[toolId] + " " + name;
+//           const textarea = document.getElementById("gmb-result");
+//           textarea.value = "Loading...";
+
+//           try {
+//             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+//               method: "POST",
+//               headers: { "Content-Type": "application/json" },
+//               body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+//             });
+
+//             const data = await res.json();
+//             textarea.value = data.candidates?.[0]?.content?.parts?.[0]?.text || "❌ No response from Gemini";
+//           } catch (e) {
+//             textarea.value = "❌ Error: " + e.message;
+//           }
+//         });
+//       });
+//     });
+//   });
+// });

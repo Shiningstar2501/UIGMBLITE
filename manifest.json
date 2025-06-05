@@ -45,6 +45,7 @@
         "auth.html",
         "pages/teleport.html",
         "pages/report.html",
+        "pages/ai-tools.html",
         "libs/leaflet.js",
         "libs/leaflet.css",
         "libs/chart.min.js",

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Tools | GMB Extension</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #1a73e8;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .tool-card {
+      background: #f0f0f0;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .tool-card:hover {
+      background-color: #e0e7ff;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-top: 20px;
+      padding: 10px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔧 AI Tools</h1>
+    <div class="tools-grid">
+      <div class="tool-card" data-tool="gmb-post">GMB Post</div>
+      <div class="tool-card" data-tool="facebook-post">Facebook Post</div>
+      <div class="tool-card" data-tool="category">GMB Category</div>
+      <div class="tool-card" data-tool="service">GMB Services</div>
+      <div class="tool-card" data-tool="review-response">Review Response</div>
+      <div class="tool-card" data-tool="qa">Q&A Section</div>
+    </div>
+    <textarea id="result" placeholder="Result will appear here..."></textarea>
+  </div>
+
+  <script src="ai-tools.js"></script>
+</body>
+</html>

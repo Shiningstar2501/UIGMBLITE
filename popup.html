@@ -23,8 +23,12 @@
             class="tab flex-1 py-2 px-3 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-200">
       Reviews
     </button>
-    <button class="tab text-sm font-medium px-4 py-2 text-gray-700" data-tab="posts">📊 Posts</button>
 
+    <button class="tab text-sm font-medium px-4 py-2 text-gray-700" data-tab="posts">📊 Posts</button>
+    <button data-tab="Ai_Tool"
+            class="tab flex-1 py-2 px-3 text-sm font-medium rounded-md bg-blue-600 text-white">
+      AI TOOL
+    </button>
   </nav>
 
   <!-- Teleport Section -->
@@ -77,10 +81,37 @@
   
   <!-- Step 1: Update popup2-info.html to add a new AI Tools tab -->
 <!-- Add this inside the tab button section -->
-<button id="ai-tools-tab" class="tab-button">AI Tools</button>
+
+<!-- <section id="Ai_Tool" class="hidden p-4">
+    <button id="load_posts" class="bg-blue-600 text-white px-4 py-2 rounded mb-4 w-full">
+      AI Tools
+    </button> -->
+    <!-- <div id="summary" class="text-sm mb-3 text-gray-800">Click above to load post analysis</div> -->
+     <!-- <div id="gmb-ai-panel">
+      <div class="tool-buttons">
+      <button class="ai-button"  class="text-sm mb-3 text-gray-800" data-tool="gmb-post">GMB Post</button>
+      <button class="ai-button"  class="text-sm mb-3 text-gray-800" data-tool="facebook-post">Facebook Post</button>
+      <button class="ai-button"  class="text-sm mb-3 text-gray-800" data-tool="category">GMB Category</button>
+      <button class="ai-button"  class="text-sm mb-3 text-gray-800" data-tool="service">GMB Services</button>
+      <button class="ai-button"  class="text-sm mb-3 text-gray-800" data-tool="review-response">Review Response</button>
+      <button class="ai-button"  class="text-sm mb-3 text-gray-800" data-tool="qa">Q&A Section</button>
+      <textarea id="gmb-result" placeholder="Result will appear here..."></textarea>
+    </div>
+    </div>
+    <canvas id="postChart" height="300"></canvas>
+  </section> -->
+
+  <button data-tab="Ai_Tool"
+        class="tab flex-1 py-2 px-3 text-sm font-medium rounded-md bg-blue-600 text-white">
+  AI TOOL
+</button>
+
+
+
+<!-- <button id="ai-tools-tab" class="tab-button">AI Tools</button> -->
 
 <!-- Add this in the tab content area -->
-<div id="ai-tools-content" class="tab-content hidden">
+<!-- <div id="ai-tools-content" class="tab-content hidden">
   <div id="gmb-ai-panel">
     <div class="tool-buttons">
       <button class="ai-button" data-tool="gmb-post">GMB Post</button>
@@ -92,7 +123,7 @@
     </div>
     <textarea id="gmb-result" placeholder="Result will appear here..."></textarea>
   </div>
-</div>
+</div> -->
 
   <script src="popup.js"></script>
   <script src="content_scripts/post-analysis.js"></script>
